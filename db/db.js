@@ -39,5 +39,5 @@ async function syncAllSequelizeInstances() {
 }
 
 module.exports = {
-    syncAllSequelizeInstances, 
+    syncAllSequelizeInstances,
 };

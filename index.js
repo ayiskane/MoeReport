@@ -1,7 +1,7 @@
 // index.js
 
 const { client } = require('./src/client');
-const { LogLevel, log } = require('./src/import'); 
+const { LogLevel, log } = require('./src/import');
 
 // Example of handling an error event
 client.on('error', (error) => {
@@ -14,5 +14,5 @@ client.on('debug', (info) => {
 });
 
 process.on('unhandledRejection', error => {
-    console.error('Unhandled promise rejection:', error);
+    log(LogLevel.ERROR, 'Unhandled promise rejection:', error);
 });

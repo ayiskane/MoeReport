@@ -17,28 +17,25 @@ log(LogLevel.DEBUG, 'Defining Sequelize models...');
  * This model stores information about Discord roles that are part of specific teams, such as "support_team".
  */
 class TeamRole extends Model { }
-
 TeamRole.init({
-    // Define model attributes
-    roleId: {
+    role_id: {
         type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
         unique: true,
         comment: 'The Discord role ID',
     },
-    teamName: {
+    team_name: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'support_team',
         comment: 'The name of the team this role is associated with',
     },
 }, {
-    // Model options
-    sequelize, // Pass the sequelize instance
-    modelName: 'TeamRole', // Define the model name
-    tableName: 'team_roles', // Define the table name
-    timestamps: false, // Disable automatic timestamp fields
+    sequelize,
+    modelName: 'TeamRole',
+    tableName: 'team_roles',
+    timestamps: false,
 });
 
 // Log a debug message indicating the model has been defined
@@ -49,10 +46,8 @@ log(LogLevel.DEBUG, 'TeamRole model defined successfully.');
  * This model stores information about Discord channels categorized as "suggestions" or "bugs".
  */
 class ChannelCategory extends Model { }
-
 ChannelCategory.init({
-    // Define model attributes
-    channelId: {
+    channel_id: {
         type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
@@ -66,11 +61,10 @@ ChannelCategory.init({
         comment: 'The category of the channel (either "suggestions" or "bugs")',
     },
 }, {
-    // Model options
-    sequelize, // Pass the sequelize instance
-    modelName: 'ChannelCategory', // Define the model name
-    tableName: 'channel_categories', // Define the table name
-    timestamps: false, // Disable automatic timestamp fields
+    sequelize,
+    modelName: 'ChannelCategory',
+    tableName: 'channel_categories',
+    timestamps: false,
 });
 
 // Log a debug message indicating the model has been defined
@@ -82,9 +76,7 @@ log(LogLevel.DEBUG, 'ChannelCategory model defined successfully.');
  * Includes an optional emoji representation and the tag name.
  */
 class Tag extends Model { }
-
 Tag.init({
-    // Define model attributes
     tag_id: {
         type: DataTypes.STRING,
         primaryKey: true,
@@ -94,11 +86,11 @@ Tag.init({
     channel_id: {
         type: DataTypes.STRING,
         allowNull: false,
+        references: {
+            model: 'channel_categories',
+            key: 'channel_id',
+        },
         comment: 'The Discord channel ID the tag is associated with',
-    },
-    tag_emoji: {
-        type: DataTypes.JSON,
-        comment: 'Optional JSON field for storing emoji representation of the tag',
     },
     tag_name: {
         type: DataTypes.STRING,
@@ -106,11 +98,10 @@ Tag.init({
         comment: 'The name of the tag',
     },
 }, {
-    // Model options
-    sequelize, // Pass the sequelize instance
-    modelName: 'Tag', // Define the model name
-    tableName: 'tags', // Define the table name
-    timestamps: true, // Enable automatic timestamp fields (createdAt and updatedAt)
+    sequelize,
+    modelName: 'Tag',
+    tableName: 'tags',
+    timestamps: true,
 });
 
 // Log a debug message indicating the model has been defined
@@ -121,28 +112,32 @@ log(LogLevel.DEBUG, 'Tag model defined successfully.');
  * Represents a project with a unique ID, name, and description.
  */
 class Project extends Model { }
-
 Project.init({
-    // Define model attributes
-    projectId: {
+    project_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
         comment: 'Unique identifier for the project',
     },
-    projectName: {
+    project_name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         comment: 'The name of the project',
     },
+    tag_ids: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        comment: 'JSON array containing associated tag IDs for the project',
+    },
 }, {
-    // Model options
-    sequelize, // Pass the sequelize instance
-    modelName: 'Project', // Define the model name
-    tableName: 'projects', // Define the table name
+    sequelize,
+    modelName: 'Project',
+    tableName: 'projects',
+    timestamps: true,
 });
+
 
 // Log a debug message indicating the model has been defined
 log(LogLevel.DEBUG, 'Project model defined successfully.');
@@ -152,7 +147,6 @@ log(LogLevel.DEBUG, 'Project model defined successfully.');
  * Represents a post with a unique ID, content, and status, associated with a specific project.
  */
 class Post extends Model { }
-
 Post.init({
     // Define model attributes
     post_id: {
@@ -175,30 +169,32 @@ Post.init({
         type: DataTypes.STRING,
         comment: 'The status of the post',
     },
-    // Foreign key to Project
-    projectId: {
+    project_id: {
         type: DataTypes.UUID,
         references: {
-            model: Project,
-            key: 'projectId',
+            model: 'projects',
+            key: 'project_id',
         },
         allowNull: false,
         comment: 'The project this post is associated with',
     },
 }, {
-    // Model options
-    sequelize, // Pass the sequelize instance
-    modelName: 'Post', // Define the model name
-    tableName: 'posts', // Define the table name
-    timestamps: true, // Enable automatic timestamp fields (createdAt and updatedAt)
+    sequelize,
+    modelName: 'Post',
+    tableName: 'posts',
+    timestamps: true,
 });
 
 // Log a debug message indicating the model has been defined
 log(LogLevel.DEBUG, 'Post model defined successfully.');
 
-// Define the relationship to Project
-Project.hasMany(Post, { foreignKey: 'projectId' });
-Post.belongsTo(Project, { foreignKey: 'projectId' });
+// Define relationships
+Project.hasMany(Post, { foreignKey: 'project_id' });
+Post.belongsTo(Project, { foreignKey: 'project_id' });
+Post.belongsToMany(Tag, { through: 'PostTags', foreignKey: 'post_id' });
+Tag.belongsToMany(Post, { through: 'PostTags', foreignKey: 'tag_id' });
+Tag.belongsTo(ChannelCategory, { foreignKey: 'channel_id', as: 'channel' });
+ChannelCategory.hasMany(Tag, { foreignKey: 'channel_id', as: 'tags' });
 
 const sequelizeInstances = [Project, Post, Tag, TeamRole, ChannelCategory];
 
