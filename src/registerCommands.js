@@ -1,7 +1,7 @@
 // src/registerCommands.js
 
 const { REST, Routes, Collection, SlashCommandBuilder } = require('discord.js');
-const { clientId, token, LogLevel, log } = require('./import');
+const { clientId, guildId, token, LogLevel, log } = require('./import');
 const fs = require('fs');
 const path = require('path');
 const rest = new REST({ version: '10' }).setToken(token);
@@ -11,7 +11,6 @@ const rest = new REST({ version: '10' }).setToken(token);
  * This function updates the bot's slash commands globally or for a specific guild.
  */
 const registerCommands = async (client) => {
-    const guildId = "1208256898982223952"; // For debugging use only
     client.commands = new Collection();
     const commands = [];
     const commandsPath = path.join(__dirname, '..', 'commands');

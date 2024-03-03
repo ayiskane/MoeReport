@@ -9,50 +9,21 @@ const { LogLevel, log, assetPath } = require('../src/import');
  */
 function getDefaultEmbedSettings() {
     return {
-        color: "#1596e9",
+        color: "#655E8F",
         footer: {
-            text: "Suggex: Catch & Patch ⋆ suggexbot.io",
-            iconURL: assetPath +'suggex_logo.png'
+            text: "Elevate Your Gameplay ▰ fbi.moe",
+            iconURL: assetPath +'moe_icon_256.png'
         },
-        thumbnail: assetPath +'suggex_thumb.png',
-        image: assetPath +'suggex_image.png',
+        thumbnail: assetPath +'moe_icon.png',
+        image: assetPath +'moe_image.png',
         author: {
-            name: "Suggex",
-            iconURL: assetPath +'suggex_logo.png',
+            name: "Moe Reports",
+            iconURL: assetPath +'moe_icon_256.png',
         },
-        url: 'https://suggexbot.io',
+        url: 'https://fbi.moe',
     }
-}
-
-function getDefaultModalSettings() {
-    return {
-        components: [
-            {
-                type: 'TEXT_INPUT', // Type of the component
-                customId: 'textInput1', // Identifier for this component
-                label: 'Your First Question', // Label shown above the input
-                style: 'SHORT', // Can be 'SHORT' for a single-line input or 'PARAGRAPH' for multi-line
-                minLength: 1, // Minimum input length
-                maxLength: 100, // Maximum input length
-                placeholder: 'Type your answer here...', // Placeholder text shown in the input field
-                required: true, // Whether this field must be filled to submit the modal
-            },
-            {
-                type: 'TEXT_INPUT',
-                customId: 'textInput2',
-                label: 'Your Second Question',
-                style: 'PARAGRAPH',
-                minLength: 1,
-                maxLength: 500,
-                placeholder: 'Type your answer here...',
-                required: false, // This field is optional
-            }
-            // Add more components as needed
-        ]
-    };
 }
 
 module.exports = {
     getDefaultEmbedSettings,
-    getDefaultModalSettings,
 };
