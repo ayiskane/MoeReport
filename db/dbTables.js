@@ -55,8 +55,7 @@ ChannelCategory.init({
         comment: 'The Discord channel ID',
     },
     category: {
-        type: DataTypes.ENUM,
-        values: ['suggestions', 'bugs'],
+        type: DataTypes.STRING,
         allowNull: false,
         comment: 'The category of the channel (either "suggestions" or "bugs")',
     },
