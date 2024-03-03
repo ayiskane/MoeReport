@@ -25,12 +25,6 @@ TeamRole.init({
         unique: true,
         comment: 'The Discord role ID',
     },
-    team_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'support_team',
-        comment: 'The name of the team this role is associated with',
-    },
 }, {
     sequelize,
     modelName: 'TeamRole',

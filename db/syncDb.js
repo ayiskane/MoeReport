@@ -44,11 +44,11 @@ async function initProjects() {
 async function initTeamRoles() {
     try {
         const teamRoles = await TeamRole.bulkCreate([
-            { role_id: '1182111820929052672', team_name: 'support_team' }, // Adjusted to snake_case
-            { role_id: '1180940115590267012', team_name: 'support_team' }, // Adjusted to snake_case
-            { role_id: '1180949078494941355', team_name: 'support_team' }, // Adjusted to snake_case
-            { role_id: '1184118546154917969', team_name: 'support_team' }, // Adjusted to snake_case
-            { role_id: '1202460906257256488', team_name: 'support_team' }, // Adjusted to snake_case
+            { role_id: '1182111820929052672'}, // Adjusted to snake_case
+            { role_id: '1180940115590267012'}, // Adjusted to snake_case
+            { role_id: '1180949078494941355'}, // Adjusted to snake_case
+            { role_id: '1184118546154917969'}, // Adjusted to snake_case
+            { role_id: '1202460906257256488'}, // Adjusted to snake_case
         ]);
         log(LogLevel.INFO, `Successfully created ${teamRoles.length} TeamRoles.`);
     } catch (error) {
