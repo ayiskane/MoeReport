@@ -200,10 +200,13 @@ log(LogLevel.DEBUG, 'Post model defined successfully.');
 Project.hasMany(Post, { foreignKey: 'projectId' });
 Post.belongsTo(Project, { foreignKey: 'projectId' });
 
+const sequelizeInstances = [Project, Post, Tag, TeamRole, ChannelCategory];
+
 module.exports = {
+    sequelizeInstances,
     Project,
     Post,
     Tag,
     TeamRole,
     ChannelCategory,
-  };
+};
