@@ -21,7 +21,6 @@ TeamRole.init({
     role_id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        unique: true,
         comment: 'The Discord role ID',
     },
 }, {
