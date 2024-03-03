@@ -88,7 +88,7 @@ async function initTags() {
     }
 }
 
-async function initializeDatabase() {
+async function syncInit() {
     await initTeamRoles();
     await initChannelCategories();
     await initTags();
@@ -97,12 +97,12 @@ async function initializeDatabase() {
 }
 
 // Call initializeDatabase at the appropriate time in your application's lifecycle
-initializeDatabase().catch(error => {
+syncInit().catch(error => {
     log(LogLevel.ERROR, `Database initialization failed: ${error.message}`);
 });
 
 module.exports = {
-    initializeDatabase,
+    syncInit,
     initProjects,
     initTeamRoles,
     initChannelCategories,
