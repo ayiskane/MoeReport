@@ -44,15 +44,21 @@ async function initProjects() {
 async function initTeamRoles() {
     try {
         const teamRoles = await TeamRole.bulkCreate([
-            { role_id: '1182111820929052672'}, // Adjusted to snake_case
-            { role_id: '1180940115590267012'}, // Adjusted to snake_case
-            { role_id: '1180949078494941355'}, // Adjusted to snake_case
-            { role_id: '1184118546154917969'}, // Adjusted to snake_case
-            { role_id: '1202460906257256488'}, // Adjusted to snake_case
+            { role_id: '1182111820929052672' }, // Adjusted to snake_case
+            { role_id: '1180940115590267012' }, // Adjusted to snake_case
+            { role_id: '1180949078494941355' }, // Adjusted to snake_case
+            { role_id: '1184118546154917969' }, // Adjusted to snake_case
+            { role_id: '1202460906257256488' }, // Adjusted to snake_case
         ]);
         log(LogLevel.INFO, `Successfully created ${teamRoles.length} TeamRoles.`);
     } catch (error) {
-        log(LogLevel.ERROR, `Error creating team roles: ${error.message}`);
+        if (error.errors) {
+            error.errors.forEach(err => {
+                log(LogLevel.ERROR, `Validation error for field ${err.path}: ${err.message}`);
+            });
+        } else {
+            log(LogLevel.ERROR, `Error creating team roles: ${error.message}`);
+        }
     }
 }
 

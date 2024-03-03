@@ -20,7 +20,6 @@ class TeamRole extends Model { }
 TeamRole.init({
     role_id: {
         type: DataTypes.STRING,
-        allowNull: false,
         primaryKey: true,
         unique: true,
         comment: 'The Discord role ID',
